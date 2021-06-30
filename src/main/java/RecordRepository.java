@@ -11,15 +11,15 @@ public class RecordRepository {
 
     public void create(Record record) throws SQLException {
 
-        String query = "INSERT INTO records( text) VALUES(?)";
-        PreparedStatement preparedStatement = dbHandler.getConnection().prepareStatement(query);
+            String query = "INSERT INTO records( text) VALUES(?)";
+            PreparedStatement preparedStatement = dbHandler.getConnection().prepareStatement(query);
 
 
-        preparedStatement.setString(1, record.text);
-        preparedStatement.execute();
-        preparedStatement.close();
+            preparedStatement.setString(1, record.toString());
+            preparedStatement.execute();
+            preparedStatement.close();
+
     }
-
 
     public static ArrayList<Record> getAll() throws SQLException {
         Statement statement = dbHandler.getConnection().createStatement();
@@ -32,7 +32,7 @@ public class RecordRepository {
         while (results.next()) {
             int id = results.getInt("id");
             String text = results.getString("text");
-            records.add((Record) new Record(id, text));
+            records.add((Record) new Text(id, text));
         }
         statement.close();
         return records;
@@ -47,7 +47,7 @@ public class RecordRepository {
         ResultSet results = statement.executeQuery(query);
 
         results.next();
-        record = new Record(
+        record = new Text(
                 results.getInt("id"),
                 results.getString("text")
 

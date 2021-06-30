@@ -30,7 +30,9 @@ public class Main {
 
         while (true) {
             try {
-              Record record =new Record();
+                String type = InputUtils.askString("Put Type");
+                RecordType recType = RecordType.valueOf(type);
+                Record record = recType.createRecord();
                 record.askData();
                 System.out.println(recordController.createRecord(record));
                 break;
@@ -42,7 +44,7 @@ public class Main {
     }
     private static void findRecord() {
         Record record = RecordController.findRecord(InputUtils.askInt("Put id :"));
-       System.out.println(record.text + " found!");
+       System.out.println(record.toString() + " found!");
     }
 
     private static void deleteRecord() throws SQLException {
@@ -54,7 +56,7 @@ public class Main {
        ArrayList<Record> records = RecordController.getAllRecords();
         System.out.println("All Notes");
         for (Record currentRecord: records){
-            System.out.println(currentRecord.id + " - " + currentRecord.text);
+            System.out.println(currentRecord.id + " - " + currentRecord.type);
         }
     }
 }
