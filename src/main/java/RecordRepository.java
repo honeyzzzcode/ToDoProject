@@ -1,5 +1,4 @@
 import DataBase.DBHandler;
-import com.sun.prism.impl.Disposer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,14 +6,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public  class RecordRepository {
+public class RecordRepository {
     private static DBHandler dbHandler = new DBHandler();
 
     public void create(Record record) throws SQLException {
-        String query = "INSERT INTO records(id, text) VALUES(?,?)";
+
+        String query = "INSERT INTO records( text) VALUES(?)";
         PreparedStatement preparedStatement = dbHandler.getConnection().prepareStatement(query);
-        preparedStatement.setInt(1, record.id);
-        preparedStatement.setString(2, record.text);
+
+
+        preparedStatement.setString(1, record.text);
         preparedStatement.execute();
         preparedStatement.close();
     }
@@ -28,7 +29,7 @@ public  class RecordRepository {
         ArrayList<Record> records = new ArrayList<Record>();
 
 
-        while (results.next()){
+        while (results.next()) {
             int id = results.getInt("id");
             String text = results.getString("text");
             records.add((Record) new Record(id, text));
@@ -36,7 +37,7 @@ public  class RecordRepository {
         statement.close();
         return records;
     }
-    
+
     public Record getRecord(Integer id) throws SQLException {
         Record record;
 
@@ -46,7 +47,7 @@ public  class RecordRepository {
         ResultSet results = statement.executeQuery(query);
 
         results.next();
-       record = new Record(
+        record = new Record(
                 results.getInt("id"),
                 results.getString("text")
 
@@ -56,4 +57,24 @@ public  class RecordRepository {
 
         return record;
     }
+
+
+    public static void delete(int id) throws SQLException {
+        String query = "DELETE FROM " + "records" + " WHERE " + "id" + "=?";
+
+        PreparedStatement preparedStatement = dbHandler.getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        int update = preparedStatement.executeUpdate();
+        if (update == 1) {
+            System.out.println("Successfully deleted one row");
+        } else if (update == 0) {
+            System.out.println("Nothing was deleted. Probably ID is wrong!");
+        }
+        preparedStatement.execute();
+        preparedStatement.close();
+    }
+
+
+
+
 }

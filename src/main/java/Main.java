@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Main {
@@ -5,7 +6,7 @@ public class Main {
 
    public static RecordController recordController = new RecordController();
 
-        public static void main(String[] args) {
+        public static void main(String[] args) throws SQLException {
             System.out.println("Hello ! Welcome to Notes!");
 
             boolean running = true;
@@ -15,25 +16,12 @@ public class Main {
                         "\nEnter command: \n" +
                         "\n--------------------------------------------");
                 switch (cmd) {
-                    case "2":
-                        listRecords();
-                        break;
-                    case "1":
-                        createRecord();
-                        break;
-                    case "3":
-                        running = false;
-                        break;
-                    case "4":
-                        deleteRecord();
-                        break;
-                    case "5":
-                        findRecord();
-                        break;
-
-
-                    default:
-                        System.out.println("Unknown command");
+                    case "2" -> listRecords();
+                    case "1" -> createRecord();
+                    case "3" -> running = false;
+                    case "4" -> deleteRecord();
+                    case "5" -> findRecord();
+                    default -> System.out.println("Unknown command");
                 }
             }
             System.out.println("Bye Bye");
@@ -44,7 +32,7 @@ public class Main {
             try {
               Record record =new Record();
                 record.askData();
-                System.out.println(recordController.createRecord(record)); ;
+                System.out.println(recordController.createRecord(record));
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println("Mistake");
@@ -53,14 +41,13 @@ public class Main {
         }
     }
     private static void findRecord() {
-        Record record = RecordController.findRecord(1);
+        Record record = RecordController.findRecord(InputUtils.askInt("Put id :"));
        System.out.println(record.text + " found!");
     }
 
-    private static void deleteRecord() {
-        int id = InputUtils.askInt("ID");
-
-
+    private static void deleteRecord() throws SQLException {
+        int id= InputUtils.askInt("Please enter an id to remove an item: ");
+        RecordRepository.delete(id);
     }
 
     private static void listRecords() {
@@ -68,6 +55,6 @@ public class Main {
         System.out.println("All Notes");
         for (Record currentRecord: records){
             System.out.println(currentRecord.id + " - " + currentRecord.text);
-        };
+        }
     }
 }

@@ -1,3 +1,10 @@
+import DataBase.DBHandler;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 public class Record {
     public String text;
     public int id;
@@ -9,15 +16,16 @@ public class Record {
 
     private static int counter = 0;
     public Record() {
-        counter++;
+            counter++;
         id = counter;
+
     }
 
-    @Override
-    public String toString() {
+  //  @Override
+    //public String toString() {
 
-        return String.format("id:%d; Text :%s", id,text);
-    }
+   //     return String.format("id:%d; Text :%s", id,text);
+   // }
 
     public void askData(){
 
