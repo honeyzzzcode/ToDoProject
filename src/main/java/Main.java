@@ -21,18 +21,23 @@ public class Main {
                     case "3" -> running = false;
                     case "4" -> deleteRecord();
                     case "5" -> findRecord();
+                    case "6"->markAsComplete();
                     default -> System.out.println("Unknown command");
                 }
             }
             System.out.println("Bye Bye");
         }
+
+    private static void markAsComplete() throws SQLException {
+        int id= InputUtils.askInt("Please enter an id to mark as complete: ");
+        RecordRepository.markAsComplete(id);
+    }
+
     private static void createRecord() {
 
         while (true) {
             try {
-                String type = InputUtils.askString("Put Type");
-                RecordType recType = RecordType.valueOf(type);
-                Record record = recType.createRecord();
+           Record record = new Record();
                 record.askData();
                 System.out.println(recordController.createRecord(record));
                 break;
@@ -56,7 +61,7 @@ public class Main {
        ArrayList<Record> records = RecordController.getAllRecords();
         System.out.println("All Notes");
         for (Record currentRecord: records){
-            System.out.println(currentRecord.id + " - " + currentRecord.type);
+            System.out.println(currentRecord.id + " - " + currentRecord.text+ " - "+ currentRecord.status);
         }
     }
 }

@@ -5,23 +5,30 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public abstract class Record {
-    public String type;
+public  class Record {
+    public String status= "not complete";
+public Record(){}
+    public Record(int id,String text,String status  ) {
+        this.status = status;
+        this.text = text;
+        this.id = id;
+    }
+
+    public   String text;
     public int id;
+
 
     @Override
     public String toString() {
 
-       return String.format("id:%d; Type :%s", id,type);
+       return String.format("id:%d , Text: %s,Status: %s", id,text,status);
     }
 
-    public void askData(){
-        type = InputUtils.askString("Put Type");
-    };
+    public void askData(){text=InputUtils.askString("Put text:"); };
     public boolean contains(String substr) {
         String strID = String.valueOf(id);
 
-        return  strID.contains(substr)
-                || type.toLowerCase().contains(substr);
+        return  strID.contains(substr);
+
     }
 }

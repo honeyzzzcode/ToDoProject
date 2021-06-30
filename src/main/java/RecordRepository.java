@@ -9,15 +9,17 @@ import java.util.ArrayList;
 public class RecordRepository {
     private static DBHandler dbHandler = new DBHandler();
 
+
     public void create(Record record) throws SQLException {
 
-            String query = "INSERT INTO records( text) VALUES(?)";
-            PreparedStatement preparedStatement = dbHandler.getConnection().prepareStatement(query);
+        String query = "INSERT INTO records( text,status) VALUES(?,?)";
+        PreparedStatement preparedStatement = dbHandler.getConnection().prepareStatement(query);
 
 
-            preparedStatement.setString(1, record.toString());
-            preparedStatement.execute();
-            preparedStatement.close();
+        preparedStatement.setString(1, record.text);
+        preparedStatement.setString(2, record.status);
+        preparedStatement.execute();
+        preparedStatement.close();
 
     }
 
@@ -32,7 +34,8 @@ public class RecordRepository {
         while (results.next()) {
             int id = results.getInt("id");
             String text = results.getString("text");
-            records.add((Record) new Text(id, text));
+            String status = results.getString("status");
+            records.add((Record) new Record(id, text, status));
         }
         statement.close();
         return records;
@@ -47,10 +50,10 @@ public class RecordRepository {
         ResultSet results = statement.executeQuery(query);
 
         results.next();
-        record = new Text(
+        record = new Record(
                 results.getInt("id"),
-                results.getString("text")
-
+                results.getString("text"),
+                results.getString("status")
         );
 
         statement.close();
@@ -74,7 +77,22 @@ public class RecordRepository {
         preparedStatement.close();
     }
 
+    public static void markAsComplete(int id) throws SQLException {
 
+        String query = "UPDATE records SET status = ? WHERE id =?;";
+
+        PreparedStatement preparedStatement = dbHandler.getConnection().prepareStatement(query);
+        preparedStatement.setString(1, "complete");
+        preparedStatement.setInt(2,id);
+        int update = preparedStatement.executeUpdate();
+        if (update == 1) {
+            System.out.println("Successfully completed ");
+        } else if (update == 0) {
+            System.out.println("Nothing was changed. Probably ID is wrong!");
+        }
+        preparedStatement.execute();
+        preparedStatement.close();
+    }
 
 
 }
