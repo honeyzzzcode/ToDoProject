@@ -12,7 +12,7 @@ public class Main {
             boolean running = true;
             while (running) {
                 String cmd = InputUtils.askString("\n--------------------------------------------\n" +
-                        "\n Possible commands are:\n1.Create Note \n2.List of Notes\n3.Exit program\n4.Delete Note\n5.Find Note" +
+                        "\n Possible commands are:\n1.Create Note \n2.List of Notes\n3.Exit program\n4.Delete Note\n5.Find Note\n6.Mark as complete" +
                         "\nEnter command: \n" +
                         "\n--------------------------------------------");
                 switch (cmd) {

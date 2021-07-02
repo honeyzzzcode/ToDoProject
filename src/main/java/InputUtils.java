@@ -14,7 +14,7 @@ public class InputUtils {
 
     public static String askString(String msg) {
         System.out.println(msg + " ");
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     public static int askInt(String message) {
